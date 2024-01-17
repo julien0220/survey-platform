@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import styles from "./questionCard.module.css";
+import styles from "./QuestionCard.module.scss";
 
 type PropsType = {
   _id: string;
@@ -12,9 +12,11 @@ type PropsType = {
 
 const QuestionCard: FC<PropsType> = (props: PropsType) => {
   return (
-    <>
-      <p>QuestionCard</p>
-    </>
+    <div className={styles.container}>
+      <div>title</div>
+      button
+      <div></div>
+    </div>
   );
 };
 

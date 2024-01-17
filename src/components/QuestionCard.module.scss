@@ -1,0 +1,10 @@
+.container { // 使用 sass 的话命名不会重复，所以这样命名没问题
+    margin-bottom: 20px;
+    padding: 12px;
+    border-radius: 3px;
+    background-color: #fff;
+
+    &:hover {
+        box-shadow: 0 4px 10px #e8e8e8;
+    }
+}
