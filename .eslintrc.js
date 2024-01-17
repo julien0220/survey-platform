@@ -24,12 +24,16 @@ module.exports = {
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: "latest",
+    ecmaVersion: 2021, // or your desired ECMAScript version
     sourceType: "module"
   },
   plugins: ["@typescript-eslint", "react"],
   rules: {
-    "prettier/prettier": "error"
+    // "prettier/prettier": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { args: "none", ignoreRestSiblings: false }
+    ]
     // "json/quote-props": ["error", "always"],
   }
 };

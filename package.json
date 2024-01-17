@@ -11,9 +11,11 @@
     "@types/node": "^16.18.70",
     "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.18",
+    "ahooks": "^3.7.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "sass": "^1.69.7",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -22,9 +24,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint":"eslint 'src/**/*.+(js|ts|jsx|tsx)'",
-    "format":"prettier --write 'src/**/*.+(js|ts|jsy|tsx)' "
-
+    "lint": "eslint 'src/**/*.+(js|ts|jsx|tsx)'",
+    "format": "prettier --write 'src/**/*.+(js|ts|jsy|tsx)' "
   },
   "eslintConfig": {
     "extends": [
