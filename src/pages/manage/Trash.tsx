@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 
-const trash: FC = () => {
-  return <>trash</>;
+const Trash: FC = () => {
+  return <>Trash</>;
 };
 
-export default trash;
+export default Trash;

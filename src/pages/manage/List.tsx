@@ -56,7 +56,7 @@ const List: FC = () => {
           return <QuestionCard key={_id} {...q} />;
         })}
       </div>
-      <div className={styles.footer}>footer</div>
+      <div className={styles.footer}>list page footer</div>
     </>
   );
 };
