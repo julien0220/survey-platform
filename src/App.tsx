@@ -1,14 +1,10 @@
 import React from "react";
+import { RouterProvider } from "react-router-dom";
+import routerConfig from "./router";
 import "./App.css";
-import List from "./pages/manage/List";
 
 function App() {
-  return (
-    <div className="App">
-      <h1 style={{ backgroundColor: "orange" }}>问卷 FE</h1>
-      <List />
-    </div>
-  );
+  return <RouterProvider router={routerConfig}></RouterProvider>;
 }
 
 export default App;
