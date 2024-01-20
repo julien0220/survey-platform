@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { Button } from "antd";
 
 const Home: FC = () => {
   const nav = useNavigate();
@@ -14,7 +15,9 @@ const Home: FC = () => {
   return (
     <div>
       <p>home</p>
-      <button onClick={clickHandler}>登录</button>
+      <Button onClick={clickHandler} type="primary">
+        登录
+      </Button>
       <Link to="/register">注册</Link>
       {/* <Link to="/register?a=10">注册</Link> */}
     </div>
