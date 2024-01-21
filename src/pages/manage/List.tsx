@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 // import { useSearchParams } from "react-router-dom";
 import QuestionCard from "../../components/QuestionCard";
-import styles from "./List.module.scss";
+import styles from "./Common.module.scss";
 
 const rawQuestionList = [
   {
@@ -54,12 +54,13 @@ const List: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {questionList.map((q) => {
-          const { _id } = q;
-          return <QuestionCard key={_id} {...q} />;
-        })}
+        {questionList.length &&
+          questionList.map((q) => {
+            const { _id } = q;
+            return <QuestionCard key={_id} {...q} />;
+          })}
       </div>
-      <div className={styles.footer}>list page footer</div>
+      <div className={styles.footer}>load more 上划加载更多</div>
     </>
   );
 };
