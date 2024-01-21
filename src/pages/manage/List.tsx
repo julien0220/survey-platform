@@ -1,8 +1,10 @@
 import React, { FC, useState } from "react";
 // import { useSearchParams } from "react-router-dom";
 import QuestionCard from "../../components/QuestionCard";
+import { Typography } from "antd";
 import styles from "./Common.module.scss";
 
+const { Title } = Typography;
 const rawQuestionList = [
   {
     _id: "q1", // 为了和 mongoDB 保持一致，使用 _id
@@ -47,7 +49,7 @@ const List: FC = () => {
     <>
       <div className={styles.header}>
         <div className={styles.left}>
-          <h3>我的问卷</h3>
+          <Title level={3}>我的问卷</Title>
         </div>
         <div className={styles.right}>
           <h3>搜索</h3>
@@ -60,7 +62,7 @@ const List: FC = () => {
             return <QuestionCard key={_id} {...q} />;
           })}
       </div>
-      <div className={styles.footer}>load more 上划加载更多</div>
+      <div className={styles.footer}>load more...... 上划加载更多......</div>
     </>
   );
 };
