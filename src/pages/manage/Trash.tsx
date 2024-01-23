@@ -1,10 +1,20 @@
 import React, { FC, useState } from "react";
 import { useTitle } from "ahooks";
-import { Typography, Empty, Table, Tag } from "antd";
+import {
+  Typography,
+  Empty,
+  Table,
+  Tag,
+  Space,
+  Button,
+  message,
+  Modal
+} from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import styles from "./Common.module.scss";
-import { table } from "console";
 
 const { Title } = Typography;
+const { confirm } = Modal;
 
 const rawQuestionList = [
   {
@@ -45,6 +55,7 @@ const Trash: FC = () => {
   useTitle("漫旅问卷 - 回收站");
 
   const [questionList, setQuestionList] = useState(rawQuestionList);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]); // 选中的问卷id, 泛型
 
   const tableColumns = [
     {
@@ -73,6 +84,52 @@ const Trash: FC = () => {
     }
   ];
 
+  function del() {
+    confirm({
+      title: "确认删除吗？",
+      icon: <ExclamationCircleOutlined />,
+      content: "删除后将无法恢复",
+      onOk: () => message.success(`删除${JSON.stringify(selectedIds)}`)
+    });
+  }
+
+  const TableElement = (
+    <>
+      <div style={{ marginBottom: "16px" }}>
+        <Space>
+          <Button disabled={selectedIds.length === 0} type="primary">
+            恢复
+          </Button>
+          <Button
+            disabled={selectedIds.length === 0}
+            danger
+            onClick={() => {
+              del();
+            }}
+          >
+            彻底删除
+          </Button>
+        </Space>
+      </div>
+      <Table
+        dataSource={questionList}
+        columns={tableColumns}
+        rowSelection={{
+          type: "checkbox",
+          onChange: (selectedRowKeys, selectedRows) => {
+            console.log(
+              `selectedRowKeys: ${selectedRowKeys}`, // 选中的行id
+              `selectedRows: ${JSON.stringify(selectedRows)}` // 选中的行
+            );
+            setSelectedIds(selectedRowKeys as string[]);
+            // console.log(selectedIds, JSON.stringify(selectedIds));
+          }
+        }}
+        pagination={false}
+        rowKey={(q) => q._id}
+      />
+    </>
+  );
   return (
     <>
       <div className={styles.header}>
@@ -85,14 +142,7 @@ const Trash: FC = () => {
       </div>
       <div className={styles.content}>
         {!questionList.length && <Empty />}
-        {questionList.length && (
-          <Table
-            dataSource={questionList}
-            columns={tableColumns}
-            pagination={false}
-            rowKey={(q) => q._id}
-          />
-        )}
+        {questionList.length && TableElement}
       </div>
       <div className={styles.footer}>分页</div>
     </>
