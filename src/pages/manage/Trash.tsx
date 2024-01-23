@@ -10,6 +10,7 @@ import {
   message,
   Modal
 } from "antd";
+import ListSearch from "../../components/ListSearch";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import styles from "./Common.module.scss";
 
@@ -137,7 +138,8 @@ const Trash: FC = () => {
           <Title level={3}>回收站</Title>
         </div>
         <div className={styles.right}>
-          <h3>搜索</h3>
+          {/* <h3>搜索</h3> */}
+          <ListSearch />
         </div>
       </div>
       <div className={styles.content}>

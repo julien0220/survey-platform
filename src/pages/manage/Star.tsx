@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { useTitle } from "ahooks";
 import { Typography, Empty } from "antd";
 import QuestionCard from "../../components/QuestionCard";
+import ListSearch from "../../components/ListSearch";
 import styles from "./Common.module.scss";
 
 const { Title } = Typography;
@@ -45,7 +46,8 @@ const Star: FC = () => {
           <Title level={3}>星标问卷</Title>
         </div>
         <div className={styles.right}>
-          <h3>搜索</h3>
+          {/* <h3>搜索</h3> */}
+          <ListSearch />
         </div>
       </div>
       <div className={styles.content}>
