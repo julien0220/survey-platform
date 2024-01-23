@@ -33,7 +33,8 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": [
       "warn",
       { args: "none", ignoreRestSiblings: false }
-    ]
+    ],
+    "@typescript-eslint/no-explicit-any": ["off"]
     // "json/quote-props": ["error", "always"],
   }
 };
