@@ -1,5 +1,5 @@
-import React, { FC, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { FC, useEffect, useState } from "react";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import type { ChangeEvent } from "react";
 import { LIST_SEARCH_PARAM_KEY } from "../constant";
 import { Input } from "antd";
@@ -13,6 +13,12 @@ const ListSearch: FC = () => {
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value);
   }
+
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    const curVal = searchParams.get(LIST_SEARCH_PARAM_KEY) || "";
+    setValue(curVal);
+  }, [searchParams]);
 
   function handleSearch(value: string) {
     // 跳转页面，增加url参数
