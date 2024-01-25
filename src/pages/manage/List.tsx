@@ -4,8 +4,8 @@ import QuestionCard from "../../components/QuestionCard";
 import { Typography, Spin } from "antd";
 import ListSearch from "../../components/ListSearch";
 import styles from "./Common.module.scss";
-import { getQuestionListService } from "../../services/question";
-import { useRequest, useTitle } from "ahooks";
+import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
+import { useTitle } from "ahooks";
 
 const { Title } = Typography;
 
@@ -14,7 +14,7 @@ const List: FC = () => {
 
   // const [searchParams] = useSearchParams();
   // console.log("keyword", searchParams.get("keyword")); // 在url里面查找参数
-  const { data = {}, error, loading } = useRequest(getQuestionListService);
+  const { data = {}, error, loading } = useLoadQuestionListData();
   const { list = [], total = 0 } = data;
   // const [list, setList] = useState([]);
   // const [total, setTotal] = useState(0);
