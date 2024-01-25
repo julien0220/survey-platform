@@ -8,55 +8,26 @@ import {
   Space,
   Button,
   message,
-  Modal
+  Modal,
+  Spin
 } from "antd";
 import ListSearch from "../../components/ListSearch";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
+
 import styles from "./Common.module.scss";
 
 const { Title } = Typography;
 const { confirm } = Modal;
 
-const rawQuestionList = [
-  {
-    _id: "q1", // 为了和 mongoDB 保持一致，使用 _id
-    title: "问卷1",
-    isPublished: false,
-    isStar: false,
-    answerCount: 5,
-    createAt: "3月10日 13:43"
-  },
-  {
-    _id: "q2",
-    title: "问卷2",
-    isPublished: true,
-    isStar: false,
-    answerCount: 5,
-    createAt: "5月20日 17:23"
-  },
-  {
-    _id: "q3",
-    title: "问卷3",
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createAt: "6月1日 13:53"
-  },
-  {
-    _id: "q4",
-    title: "问卷4",
-    isPublished: true,
-    isStar: true,
-    answerCount: 5,
-    createAt: "7月70日 13:13"
-  }
-];
-
 const Trash: FC = () => {
   useTitle("漫旅问卷 - 回收站");
 
-  const [questionList, setQuestionList] = useState(rawQuestionList);
+  // const [questionList, setQuestionList] = useState(rawQuestionList);
   const [selectedIds, setSelectedIds] = useState<string[]>([]); // 选中的问卷id, 泛型
+
+  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true });
+  const { list = [], total = 0 } = data;
 
   const tableColumns = [
     {
@@ -113,7 +84,7 @@ const Trash: FC = () => {
         </Space>
       </div>
       <Table
-        dataSource={questionList}
+        dataSource={list}
         columns={tableColumns}
         rowSelection={{
           type: "checkbox",
@@ -143,8 +114,13 @@ const Trash: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {!questionList.length && <Empty />}
-        {questionList.length && TableElement}
+        {loading && (
+          <div style={{ textAlign: "center" }}>
+            <Spin />
+          </div>
+        )}
+        {!loading && list.length === 0 && <Empty />}
+        {list.length !== 0 && TableElement}
       </div>
       <div className={styles.footer}>分页</div>
     </>

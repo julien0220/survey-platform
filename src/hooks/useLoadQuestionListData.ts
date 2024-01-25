@@ -3,15 +3,22 @@ import { useRequest } from "ahooks";
 import { getQuestionListService } from "../services/question";
 import { LIST_SEARCH_PARAM_KEY } from "../constant";
 
-function useLoadQuestionData() {
+type OptionType = {
+  isStar: boolean;
+  isDeleted: boolean;
+};
+
+function useLoadQuestionListData(opt: Partial<OptionType> = {}) {
+  const { isStar, isDeleted } = opt;
   const [searchParams] = useSearchParams();
-  console.log("keyword", searchParams.get("page"));
+
+  //   console.log("keyword", searchParams.get("page"));
 
   const { data, loading, error } = useRequest(
     async () => {
       const keyword = searchParams.get(LIST_SEARCH_PARAM_KEY) || "";
 
-      const data = await getQuestionListService({ keyword });
+      const data = await getQuestionListService({ keyword, isStar, isDeleted });
       return data;
     },
     {
@@ -22,4 +29,4 @@ function useLoadQuestionData() {
   return { data, loading, error };
 }
 
-export default useLoadQuestionData;
+export default useLoadQuestionListData;
