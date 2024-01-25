@@ -55,7 +55,7 @@ const router = createBrowserRouter([
         element: <Edit />
       },
       {
-        path: "statistics",
+        path: "statistics/:id",
         element: <Statistics />
       }
     ]
