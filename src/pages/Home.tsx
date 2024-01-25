@@ -1,8 +1,11 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button, Typography } from "antd";
 import { MANAGE_INDEX_PATHNAME } from "../router";
 import styles from "./Home.module.scss";
+// import "../_mock/index";
+// import axios from "axios";
+
 const { Title, Paragraph } = Typography;
 
 const Home: FC = () => {
@@ -16,6 +19,27 @@ const Home: FC = () => {
   //     });
   //   }
   const nav = useNavigate();
+
+  //   useEffect(() => {
+  //     // fetch("/api/test")
+  //     //   .then((res) => res.json())
+  //     //   .then((data) => console.log("fetch data", data));
+  //     // axios.get("/api/test").then((res) => console.log("axios res", res.data)); // axios 内部使用 XMLHttoRequest API，没有用 fetch
+  //     //   .then((data) => console.log("fetch data", data));
+  //   });
+
+  // 前端3000, api 3001
+  // 跨域
+  // create-react-app Webpack devServer 代理
+  useEffect(() => {
+    fetch("/api/test")
+      .then((res) => {
+        // console.log("res", res.json());
+        return res.json();
+      })
+      .then((data) => console.log("fetch data", data));
+  }, []);
+
   return (
     // <div>
     //   <p>home</p>
