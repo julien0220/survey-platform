@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import QuestionCard from "../../components/QuestionCard";
-import { Typography, Spin } from "antd";
+import { Typography, Spin, Empty } from "antd";
 import ListSearch from "../../components/ListSearch";
 import styles from "./Common.module.scss";
 import { useTitle, useDebounceFn, useRequest } from "ahooks";
@@ -13,6 +13,7 @@ const { Title } = Typography;
 const List: FC = () => {
   useTitle("漫旅问卷 - 我的问卷");
 
+  const [started, setStarted] = useState(false); // 是否已经开始加载(防抖,有延迟时间)
   const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -61,6 +62,7 @@ const List: FC = () => {
       if (bottom <= document.documentElement.clientHeight) {
         // 加载更多
         load();
+        setStarted(true);
       }
     },
     { wait: 1000 }
@@ -77,6 +79,17 @@ const List: FC = () => {
     };
   }, [searchParams, haveMoreData]);
 
+  const LoadMoreContentElem = () => {
+    if (!started || loading) {
+      return <Spin />;
+    }
+    if (total === 0) {
+      return <Empty description="暂无数据" />;
+    }
+    if (!haveMoreData) return <span>没有更多了</span>;
+    return <span>开始加载下一页</span>;
+  };
+
   return (
     <>
       <div className={styles.header}>
@@ -84,26 +97,18 @@ const List: FC = () => {
           <Title level={3}>我的问卷</Title>
         </div>
         <div className={styles.right}>
-          {/* <h3>搜索</h3> */}
           <ListSearch />
         </div>
       </div>
-      {/* <div style={{ height: "2000px" }}></div> */}
       <div className={styles.content}>
-        {loading && (
-          <div style={{ textAlign: "center" }}>
-            <Spin />
-          </div>
-        )}
-        {!loading &&
-          list.length > 0 &&
+        {list.length > 0 &&
           list.map((q: any) => {
             const { _id } = q;
             return <QuestionCard key={_id} {...q} />;
           })}
       </div>
       <div className={styles.footer}>
-        <div ref={containerRef}>load more...... 上划加载更多......</div>
+        <div ref={containerRef}>{LoadMoreContentElem()}</div>
       </div>
     </>
   );
