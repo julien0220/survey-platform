@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button, Space, Divider, Tag, Popconfirm, Modal, message } from "antd";
 import {
@@ -9,6 +9,8 @@ import {
   DeleteOutlined,
   ExclamationCircleOutlined
 } from "@ant-design/icons";
+import { useRequest } from "ahooks";
+import { updateQuestionService } from "../services/question";
 import styles from "./QuestionCard.module.scss";
 
 const { confirm } = Modal;
@@ -25,6 +27,21 @@ type PropsType = {
 const QuestionCard: FC<PropsType> = (props: PropsType) => {
   const { _id, title, createAt, answerCount, isPublished, isStar } = props;
   const nav = useNavigate();
+
+  // 修改标星
+  const [isStarState, setIsStarState] = useState(isStar);
+  const { loading: changeStarLoading, run: changeStar } = useRequest(
+    async () => {
+      await updateQuestionService(_id, { isStar: !isStarState });
+    },
+    {
+      manual: true,
+      onSuccess() {
+        setIsStarState(!isStarState); // 更新 state
+        message.success("更新完成");
+      }
+    }
+  );
 
   function duplicate() {
     message.success("复制成功");
@@ -51,7 +68,7 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
             }
           >
             <Space>
-              {isStar && <StarOutlined style={{ color: "red" }} />}
+              {isStarState && <StarOutlined style={{ color: "red" }} />}
               {title}
             </Space>
           </Link>
@@ -102,10 +119,11 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
               type="text"
               size="small"
               onClick={() => {
-                nav(`/question/statistics/${_id}`);
+                changeStar();
               }}
+              disabled={changeStarLoading}
             >
-              {isStar ? "取消标星" : "标星"}
+              {isStarState ? "取消标星" : "标星"}
             </Button>
             {/*按钮上面弹框*/}
             <Popconfirm
