@@ -18,18 +18,18 @@ const List: FC = () => {
 
   const [searchParams] = useSearchParams(); // url 参数,没有 page 和 pageSize 参数,但是有 keyword
 
-  // 考虑防抖
-  const { run: tryLoadMore } = useDebounceFn(
-    () => {
-      console.log("tryLoadMore...");
-    },
-    { wait: 1000 }
-  );
-
-  // 页面加载时,url参数(keyword)变化时
+  // 页面初始化、url参数(keyword)变化时
   useEffect(() => {
     tryLoadMore();
   }, [searchParams]);
+
+  // 考虑防抖
+  const { run: tryLoadMore } = useDebounceFn(
+    () => {
+      // 判断最底下的元素露出了,才加载更多
+    },
+    { wait: 1000 }
+  );
 
   // 页面滚动时出发加载
   useEffect(() => {
