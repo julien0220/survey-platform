@@ -14,6 +14,7 @@ import {
 import ListSearch from "../../components/ListSearch";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
+import ListPage from "../../components/ListPage";
 
 import styles from "./Common.module.scss";
 
@@ -122,7 +123,9 @@ const Trash: FC = () => {
         {!loading && list.length === 0 && <Empty />}
         {list.length !== 0 && TableElement}
       </div>
-      <div className={styles.footer}>分页</div>
+      <div className={styles.footer}>
+        <ListPage total={total} />{" "}
+      </div>
     </>
   );
 };
