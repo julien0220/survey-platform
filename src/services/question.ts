@@ -2,11 +2,11 @@ import axios, { ResDataType } from "./ajax";
 
 type SearchOption = {
   keyword: string;
-  // page
-  // pageSize
   isStar: boolean;
   // isPublished
   isDeleted: boolean;
+  page: number;
+  pageSize: number;
 };
 
 // 获取单个问卷信息
