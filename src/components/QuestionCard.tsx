@@ -46,7 +46,7 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
     }
   );
 
-  // 复制
+  // 复制问卷
   const { loading: duplicateLoading, run: duplicate } = useRequest(
     async () => await duplicateQuestionService(_id),
     {
@@ -143,7 +143,12 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
               cancelText="取消"
               onConfirm={duplicate}
             >
-              <Button icon={<CopyOutlined />} type="text" size="small">
+              <Button
+                icon={<CopyOutlined />}
+                type="text"
+                size="small"
+                disabled={duplicateLoading}
+              >
                 复制
               </Button>
             </Popconfirm>
