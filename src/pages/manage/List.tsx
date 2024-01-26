@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useRef } from "react";
+import React, { FC, useEffect, useState, useRef, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import QuestionCard from "../../components/QuestionCard";
 import { Typography, Spin, Empty } from "antd";
@@ -87,7 +87,7 @@ const List: FC = () => {
     };
   }, [searchParams, haveMoreData]);
 
-  const LoadMoreContentElem = () => {
+  const LoadMoreContentElem = useMemo(() => {
     if (!started || loading) {
       return <Spin />;
     }
@@ -96,7 +96,7 @@ const List: FC = () => {
     }
     if (!haveMoreData) return <span>没有更多了</span>;
     return <span>开始加载下一页</span>;
-  };
+  }, [started, loading, haveMoreData]);
 
   return (
     <>
@@ -116,7 +116,7 @@ const List: FC = () => {
           })}
       </div>
       <div className={styles.footer}>
-        <div ref={containerRef}>{LoadMoreContentElem()}</div>
+        <div ref={containerRef}>{LoadMoreContentElem}</div>
       </div>
     </>
   );
