@@ -16,7 +16,7 @@ const List: FC = () => {
   const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const haveModeData = total > list.length;
+  const haveMoreData = total > list.length;
 
   const [searchParams] = useSearchParams(); // url 参数,没有 page 和 pageSize 参数,但是有 keyword
 
@@ -68,14 +68,14 @@ const List: FC = () => {
 
   // 页面滚动时出发加载
   useEffect(() => {
-    if (haveModeData) {
+    if (haveMoreData) {
       window.addEventListener("scroll", tryLoadMore);
     }
 
     return () => {
       window.removeEventListener("scroll", tryLoadMore); // 组件卸载时,移除监听(必须做)
     };
-  }, [searchParams, haveModeData]);
+  }, [searchParams, haveMoreData]);
 
   return (
     <>
