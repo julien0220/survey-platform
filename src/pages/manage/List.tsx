@@ -20,6 +20,14 @@ const List: FC = () => {
   const haveMoreData = total > list.length;
 
   const [searchParams] = useSearchParams(); // url 参数,没有 page 和 pageSize 参数,但是有 keyword
+  const keyword = searchParams.get(LIST_SEARCH_PARAM_KEY) || "";
+
+  useEffect(() => {
+    setStarted(false);
+    setPage(1);
+    setList([]);
+    setTotal(0);
+  }, [keyword]);
 
   // 真正加载
   const { run: load, loading } = useRequest(
