@@ -10,7 +10,10 @@ import {
   ExclamationCircleOutlined
 } from "@ant-design/icons";
 import { useRequest } from "ahooks";
-import { updateQuestionService } from "../services/question";
+import {
+  updateQuestionService,
+  duplicateQuestionService
+} from "../services/question";
 import styles from "./QuestionCard.module.scss";
 
 const { confirm } = Modal;
@@ -43,9 +46,17 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
     }
   );
 
-  function duplicate() {
-    message.success("复制成功");
-  }
+  // 复制
+  const { loading: duplicateLoading, run: duplicate } = useRequest(
+    async () => await duplicateQuestionService(_id),
+    {
+      manual: true,
+      onSuccess(result: any) {
+        message.success("复制成功");
+        nav(`/question/edit/${result.id}`);
+      }
+    }
+  );
 
   function del() {
     confirm({
