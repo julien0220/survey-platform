@@ -14,7 +14,10 @@ import {
 import ListSearch from "../../components/ListSearch";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
-import { updateQuestionService } from "../../services/question";
+import {
+  deleteQuestionService,
+  updateQuestionService
+} from "../../services/question";
 import ListPage from "../../components/ListPage";
 
 import styles from "./Common.module.scss";
@@ -28,6 +31,7 @@ const Trash: FC = () => {
   // const [questionList, setQuestionList] = useState(rawQuestionList);
   const [selectedIds, setSelectedIds] = useState<string[]>([]); // 选中的问卷id, 泛型
 
+  // 恢复
   const { run: recover } = useRequest(
     async () => {
       for await (const id of selectedIds) {
@@ -40,6 +44,21 @@ const Trash: FC = () => {
       onSuccess() {
         message.success("恢复成功");
         refresh();
+        setSelectedIds([]);
+      }
+    }
+  );
+
+  // 删除
+  const { run: deleteQuestion } = useRequest(
+    async () => await deleteQuestionService(selectedIds),
+    {
+      manual: true,
+      debounceWait: 500,
+      onSuccess() {
+        message.success("删除成功");
+        refresh();
+        setSelectedIds([]);
       }
     }
   );
@@ -83,7 +102,7 @@ const Trash: FC = () => {
       title: "确认删除吗？",
       icon: <ExclamationCircleOutlined />,
       content: "删除后将无法恢复",
-      onOk: () => message.success(`删除${JSON.stringify(selectedIds)}`)
+      onOk: () => deleteQuestion()
     });
   }
 
