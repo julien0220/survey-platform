@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { useTitle } from "ahooks";
+import { useTitle, useRequest } from "ahooks";
 import {
   Typography,
   Empty,
@@ -14,6 +14,7 @@ import {
 import ListSearch from "../../components/ListSearch";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
+import { updateQuestionService } from "../../services/question";
 import ListPage from "../../components/ListPage";
 
 import styles from "./Common.module.scss";
@@ -27,7 +28,27 @@ const Trash: FC = () => {
   // const [questionList, setQuestionList] = useState(rawQuestionList);
   const [selectedIds, setSelectedIds] = useState<string[]>([]); // 选中的问卷id, 泛型
 
-  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true });
+  const { run: recover } = useRequest(
+    async () => {
+      for await (const id of selectedIds) {
+        await updateQuestionService(id, { isDeleted: false });
+      }
+    },
+    {
+      manual: true,
+      debounceWait: 500, // 其实和 disabled 的 loading 差不多
+      onSuccess() {
+        message.success("恢复成功");
+        refresh();
+      }
+    }
+  );
+
+  const {
+    data = {},
+    loading,
+    refresh
+  } = useLoadQuestionListData({ isDeleted: true });
   const { list = [], total = 0 } = data;
 
   const tableColumns = [
@@ -70,7 +91,13 @@ const Trash: FC = () => {
     <>
       <div style={{ marginBottom: "16px" }}>
         <Space>
-          <Button disabled={selectedIds.length === 0} type="primary">
+          <Button
+            disabled={selectedIds.length === 0}
+            type="primary"
+            onClick={() => {
+              recover();
+            }}
+          >
             恢复
           </Button>
           <Button
