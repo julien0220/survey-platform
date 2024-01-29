@@ -9,7 +9,7 @@ import { removeToken } from "../utils/user-token";
 
 const UserInfo: FC = () => {
   const { data } = useRequest(getUserInfoService);
-  const { username, nickname } = data || {};
+  const { nickname } = data || {};
   const nav = useNavigate();
   console.log("data", data);
 
@@ -36,7 +36,7 @@ const UserInfo: FC = () => {
   return (
     <div>
       {/* <Link to={LOGIN_PATHNAME}>登录</Link> */}
-      {username ? UserInfo : login}
+      {nickname ? UserInfo : login}
     </div>
   );
 };
