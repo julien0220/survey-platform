@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export type UserStateProps = {
+export type UserStateTypes = {
   username: string;
   nickname: string;
 };
@@ -11,7 +11,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState: INITIAL_STATE,
   reducers: {
-    loginReducer: (state: UserStateProps, action: PayloadAction) => {
+    loginReducer: (state: UserStateTypes, action: PayloadAction) => {
       return action.payload;
     },
     logoutReducer: () => INITIAL_STATE
