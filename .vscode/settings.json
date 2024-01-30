@@ -8,6 +8,7 @@
         "craco",
         "immer",
         "mockjs",
-        "Popconfirm"
+        "Popconfirm",
+        "reduxjs"
     ]
 }
