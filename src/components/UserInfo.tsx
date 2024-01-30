@@ -3,17 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { LOGIN_PATHNAME } from "../router";
 import { UserOutlined } from "@ant-design/icons";
 import { Button, message } from "antd";
-import { useRequest } from "ahooks";
-import { getUserInfoService } from "../services/user";
+import useGetUserInfo from "../hooks/useGetUserInfo";
+import { useDispatch } from "react-redux";
+import { logoutReducer } from "../store/userReducer";
 import { removeToken } from "../utils/user-token";
 
 const UserInfo: FC = () => {
-  const { data } = useRequest(getUserInfoService);
-  const { nickname } = data || {};
+  const { nickname, username } = useGetUserInfo();
+  const dispatch = useDispatch();
   const nav = useNavigate();
-  console.log("data", data);
 
   function logout() {
+    dispatch(logoutReducer());
     removeToken();
     message.success("退出成功");
     nav(LOGIN_PATHNAME);
