@@ -1,9 +1,14 @@
 import React, { FC } from "react";
 import { Spin } from "antd";
+import classNames from "classnames";
 import useGetComponentInfo from "../../../hooks/useGetComponentInfo";
 import { getComponentConfByType } from "../../../components/QuestionComponents";
-import { ComponentInfoType } from "../../../store/componentsReducer";
+import {
+  ComponentInfoType,
+  changeSelectedId
+} from "../../../store/componentsReducer";
 import styles from "./EditCanvas.module.scss";
+import { useDispatch } from "react-redux";
 
 type PropsType = {
   loading: boolean;
@@ -20,7 +25,13 @@ function genComponent(componentInfo: ComponentInfoType) {
 }
 
 const EditCanvas: FC<PropsType> = ({ loading }) => {
-  const { componentList } = useGetComponentInfo();
+  const { componentList, selectedId } = useGetComponentInfo();
+  const dispatch = useDispatch();
+
+  function handleClick(id: string) {
+    dispatch(changeSelectedId(id));
+  }
+
   if (loading)
     return (
       <div style={{ textAlign: "center", marginTop: "24px" }}>
@@ -32,8 +43,22 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
       {componentList.map((c) => {
         const { fe_id } = c;
 
+        // 拼接 class name
+        const wrapperDefaultClassName = styles["component-wrapper"];
+        const selectedClassName = styles.selected;
+        const wrapperClassName = classNames({
+          [wrapperDefaultClassName]: true,
+          [selectedClassName]: fe_id === selectedId
+        });
+
         return (
-          <div key={fe_id} className={styles["component-wrapper"]}>
+          <div
+            key={fe_id}
+            className={wrapperClassName}
+            onClick={() => {
+              handleClick(fe_id);
+            }}
+          >
             <div className={styles.component}>{genComponent(c)}</div>
           </div>
         );

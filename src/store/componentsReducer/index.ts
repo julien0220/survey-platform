@@ -1,4 +1,6 @@
+/* eslint-disable */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {produce} from "immer";
 import { ComponentPropsType } from "../../components/QuestionComponents";
 
 export type ComponentInfoType = {
@@ -9,11 +11,14 @@ export type ComponentInfoType = {
 };
 
 export type ComponentsStateType = {
+  selectedId: string;
   componentList: Array<ComponentInfoType>;
 };
 
 const INIT_STATE: ComponentsStateType = {
+  selectedId: "",
   componentList: []
+  // extensions
 };
 
 export const componentsSlice = createSlice({
@@ -26,10 +31,19 @@ export const componentsSlice = createSlice({
       action: PayloadAction<ComponentsStateType>
     ) => {
       return action.payload;
-    }
+    },
+
+    // 修改 selectedId
+    changeSelectedId: produce(
+      (draft: ComponentsStateType, action: PayloadAction<string>) => {
+        console.log(draft.selectedId);
+        draft.selectedId = action.payload;
+        console.log(draft.selectedId);
+      }
+    )
   }
 });
 
-export const { resetComponents } = componentsSlice.actions;
+export const { resetComponents, changeSelectedId } = componentsSlice.actions;
 
 export default componentsSlice.reducer;
