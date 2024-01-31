@@ -23,10 +23,9 @@ function useLoadQuestionData() {
   useEffect(() => {
     if (!data) return;
     const { title = "", componentList = [] } = data;
-
     // 把 componentList 里面的组件信息存到 redux store 里面
     dispatch(resetComponents({ componentList }));
-  }, []);
+  }, [data]);
 
   // 判断 id 变化，执行 ajax 加载问卷数据
   useEffect(() => {
