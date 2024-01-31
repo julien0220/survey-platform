@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ComponentPropsType } from "../../components/QuestionComponents";
 
-export type ComponentInfoTypes = {
+export type ComponentInfoType = {
   fe_id: string; //
   type: string;
   title: string;
@@ -9,7 +9,7 @@ export type ComponentInfoTypes = {
 };
 
 export type ComponentsStateType = {
-  componentList: Array<ComponentInfoTypes>;
+  componentList: Array<ComponentInfoType>;
 };
 
 const INIT_STATE: ComponentsStateType = {
