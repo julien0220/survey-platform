@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, MouseEvent } from "react";
 import { Spin } from "antd";
 import classNames from "classnames";
 import useGetComponentInfo from "../../../hooks/useGetComponentInfo";
@@ -28,7 +28,8 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
   const { componentList, selectedId } = useGetComponentInfo();
   const dispatch = useDispatch();
 
-  function handleClick(id: string) {
+  function handleClick(event: MouseEvent, id: string) {
+    event.stopPropagation();
     dispatch(changeSelectedId(id));
   }
 
@@ -55,8 +56,8 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
           <div
             key={fe_id}
             className={wrapperClassName}
-            onClick={() => {
-              handleClick(fe_id);
+            onClick={(e) => {
+              handleClick(e, fe_id);
             }}
           >
             <div className={styles.component}>{genComponent(c)}</div>
