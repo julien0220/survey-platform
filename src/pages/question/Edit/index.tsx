@@ -4,7 +4,7 @@ import styles from "./index.module.scss";
 import EditCanvas from "./EditCanvas";
 
 const Edit: FC = () => {
-  const { loading, data } = useLoadQuestionData();
+  const { loading } = useLoadQuestionData();
 
   return (
     <div className={styles.container}>
@@ -15,7 +15,7 @@ const Edit: FC = () => {
           <div className={styles.main}>
             <div className={styles["canvas-wrapper"]}>
               {/* <div style={{ height: "900px" }}>画布，测试滚动</div> */}
-              <EditCanvas />
+              <EditCanvas loading={loading} />
             </div>
           </div>
           <div className={styles.right}>right</div>
