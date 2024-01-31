@@ -5,11 +5,12 @@ import { Spin } from "antd";
 import useNavPage from "../hooks/useNavPage";
 
 const QuestionLayout: FC = () => {
-  const { waitngUserData } = useLoadUserData();
-  useNavPage(waitngUserData);
+  const { waitngUserData } = useLoadUserData(); // 加载用户信息
+  useNavPage(waitngUserData); // 用户没有登陆时，跳转到登录页
+
   return (
-    <div>
-      <p>QuestionLayout</p>
+    <div style={{ height: "100vh" }}>
+      {/* <p>QuestionLayout</p> */}
       <div>
         {waitngUserData ? (
           <div style={{ textAlign: "center", marginTop: "70px" }}>
