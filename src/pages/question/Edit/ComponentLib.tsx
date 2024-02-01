@@ -4,14 +4,29 @@ import {
   componentConfGroup,
   ComponentConfType
 } from "../../../components/QuestionComponents";
+import { addComponent } from "../../../store/componentsReducer";
+import { useDispatch } from "react-redux";
 import styles from "./ComponentLib.module.scss";
+import { nanoid } from "@reduxjs/toolkit";
 
 const { Title } = Typography;
 
 function genComponent(c: ComponentConfType) {
-  const { title, type, Component } = c;
+  const dispatch = useDispatch();
+  const { title, type, Component, defaultProps } = c;
+
+  function handleClick() {
+    dispatch(
+      addComponent({
+        fe_id: nanoid(),
+        title,
+        type,
+        props: defaultProps
+      })
+    );
+  }
   return (
-    <div className={styles.wrapper}>
+    <div key={type} className={styles.wrapper} onClick={handleClick}>
       <div className={styles.component}>
         <Component />
       </div>
