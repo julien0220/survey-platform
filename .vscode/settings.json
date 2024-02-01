@@ -8,10 +8,12 @@
         "Appstore",
         "clonedeep",
         "craco",
+        "downarrow",
         "immer",
         "mockjs",
         "Popconfirm",
         "Propcomponent",
-        "reduxjs"
+        "reduxjs",
+        "uparrow"
     ]
 }

@@ -3,8 +3,10 @@ import { useDispatch } from "react-redux";
 import {
   deleteSelectedComponent,
   copySelectedComponent,
-  pasteSelectedComponent
+  pasteSelectedComponent,
+  selectNextComponent
 } from "../store/componentsReducer";
+import { selectPrevComponent } from "../store/componentsReducer";
 
 function isActiveElementValid() {
   const activeElem = document.activeElement;
@@ -29,5 +31,18 @@ function useBindCanvasKeyPress() {
   useKeyPress(["meta.v", "ctrl.v"], () => {
     dispatch(pasteSelectedComponent());
   });
+
+  // 选中上一个组件
+  useKeyPress("uparrow", () => {
+    if (!isActiveElementValid()) return;
+    dispatch(selectPrevComponent());
+  });
+
+  // 选中下一个组件
+  useKeyPress("downarrow", () => {
+    if (!isActiveElementValid()) return;
+    dispatch(selectNextComponent());
+  });
 }
+
 export default useBindCanvasKeyPress;

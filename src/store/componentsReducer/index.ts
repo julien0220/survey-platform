@@ -127,6 +127,28 @@ export const componentsSlice = createSlice({
         // 插入
         insertNewComponent(draft, copiedComponent);  
 
+      }),
+
+      // 选中上一个组件
+      selectPrevComponent: produce((draft: ComponentsStateType) => {
+        const {selectedId, componentList} = draft;
+        const selectedIndex = componentList.findIndex((c)=>c.fe_id === selectedId);
+        
+        if (selectedIndex < 0) return;
+        if (selectedIndex === 0) return;
+
+        draft.selectedId = componentList[selectedIndex - 1].fe_id;
+      } ),
+
+      // 选中下一个组件
+      selectNextComponent: produce((draft: ComponentsStateType) => {
+        const {selectedId, componentList} = draft;
+        const selectedIndex = componentList.findIndex((c)=>c.fe_id === selectedId);
+        
+        if (selectedIndex < 0) return;
+        if (selectedIndex === componentList.length - 1) return;
+
+        draft.selectedId = componentList[selectedIndex + 1].fe_id;
       })
 
 
@@ -137,6 +159,8 @@ export const componentsSlice = createSlice({
 
 export const { resetComponents, changeSelectedId, addComponent, 
   changeComponentProps, deleteSelectedComponent, 
-  changeComponentHidden, toggleComponentLocked, copySelectedComponent, pasteSelectedComponent  } = componentsSlice.actions;
+  changeComponentHidden, toggleComponentLocked, 
+  copySelectedComponent, pasteSelectedComponent,
+  selectPrevComponent, selectNextComponent  } = componentsSlice.actions;
 
 export default componentsSlice.reducer;
