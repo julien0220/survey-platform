@@ -72,20 +72,39 @@ export const componentsSlice = createSlice({
 
       // 删除选中的组件
       deleteSelectedComponent: produce((draft: ComponentsStateType) => {
-        const {selectedId, componentList} = draft;
+        const {selectedId, componentList = []} = draft;
         const index = componentList.findIndex((c) => c.fe_id === selectedId);
         if (index >= 0) {
           const newId = getNextSelectedId(selectedId, componentList);
           draft.componentList.splice(index, 1);
           draft.selectedId = newId;
         }
-      })
+      }),
+
+      // 隐藏/显示组件
+      changeComponentHidden: produce((draft: ComponentsStateType, action: PayloadAction<{fe_id:string; isHidden:boolean}>) => {
+        const { componentList = []} = draft;
+        const {fe_id, isHidden} = action.payload;
+        const curComp = componentList.find((c) => c.fe_id === fe_id);
+        let newId = '';
+        if (isHidden) {
+          newId = getNextSelectedId(fe_id, componentList);
+        } else {
+          newId = fe_id;
+        }
+        
+        draft.selectedId = newId;
+        if (curComp) {
+          curComp.isHidden = isHidden;
+        }
+        
+      }),
 
       
   
   }
 });
 
-export const { resetComponents, changeSelectedId, addComponent, changeComponentProps, deleteSelectedComponent } = componentsSlice.actions;
+export const { resetComponents, changeSelectedId, addComponent, changeComponentProps, deleteSelectedComponent, changeComponentHidden  } = componentsSlice.actions;
 
 export default componentsSlice.reducer;
