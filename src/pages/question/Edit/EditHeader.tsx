@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./EditHeader.module.scss";
 import { LeftOutlined } from "@ant-design/icons";
 import { Button, Space, Typography } from "antd";
+import EditToolbar from "./EditToolbar";
 
 const { Title } = Typography;
 
@@ -25,7 +26,9 @@ const EditHeader: FC = () => {
             <Title>问卷标题（动态）</Title>
           </Space>
         </div>
-        <div className={styles.main}>zhong</div>
+        <div className={styles.main}>
+          <EditToolbar />
+        </div>
         <div className={styles.right}>
           <Space>
             <Button>保存</Button>
