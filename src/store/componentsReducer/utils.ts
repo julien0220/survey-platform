@@ -1,4 +1,5 @@
-import { ComponentInfoType } from "./index";
+import { ComponentElement } from "react";
+import { ComponentInfoType, ComponentsStateType } from "./index";
 
 export function getNextSelectedId(
   fe_id: string,
@@ -10,4 +11,17 @@ export function getNextSelectedId(
   if (visibleList.length === 1) return "";
   if (index === visibleList.length - 1) return visibleList[index - 1].fe_id;
   return visibleList[index + 1].fe_id;
+}
+
+export function insertNewComponent(
+  draft: ComponentsStateType,
+  newComponent: ComponentInfoType
+) {
+  const { selectedId, componentList } = draft;
+  const index = componentList.findIndex((c) => c.fe_id === selectedId);
+
+  if (componentList.length < 0) draft.componentList.push(newComponent);
+  else draft.componentList.splice(index + 1, 0, newComponent);
+
+  draft.selectedId = newComponent.fe_id;
 }

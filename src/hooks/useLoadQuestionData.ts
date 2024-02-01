@@ -28,7 +28,13 @@ function useLoadQuestionData() {
     const selectedId = componentList.length > 0 ? componentList[0].fe_id : ""; // 默认选中第一个组件
 
     // 把 componentList 里面的组件信息存到 redux store 里面
-    dispatch(resetComponents({ componentList, selectedId: selectedId }));
+    dispatch(
+      resetComponents({
+        componentList,
+        selectedId: selectedId,
+        copiedComponent: null
+      })
+    );
   }, [data]);
 
   // 判断 id 变化，执行 ajax 加载问卷数据

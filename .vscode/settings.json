@@ -6,6 +6,7 @@
         "ahooks",
         "antd",
         "Appstore",
+        "clonedeep",
         "craco",
         "immer",
         "mockjs",

@@ -7,13 +7,13 @@ const useGetComponentInfo = () => {
     (state) => state.components
   ) as ComponentsStateType;
 
-  const { componentList = [], selectedId } = components;
+  const { componentList = [], selectedId, copiedComponent } = components;
 
   const selectedComponent = componentList.find(
     (component) => component.fe_id === selectedId
   );
 
-  return { componentList, selectedId, selectedComponent };
+  return { componentList, selectedId, selectedComponent, copiedComponent };
 };
 
 export default useGetComponentInfo;
