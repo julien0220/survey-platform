@@ -1,14 +1,15 @@
 import React, { FC, MouseEvent } from "react";
 import { Spin } from "antd";
 import classNames from "classnames";
+import { useDispatch } from "react-redux";
 import useGetComponentInfo from "../../../hooks/useGetComponentInfo";
 import { getComponentConfByType } from "../../../components/QuestionComponents";
 import {
   ComponentInfoType,
   changeSelectedId
 } from "../../../store/componentsReducer";
+import useBindCanvasKeyPress from "../../../hooks/useBindCanvasKeyPress";
 import styles from "./EditCanvas.module.scss";
-import { useDispatch } from "react-redux";
 
 type PropsType = {
   loading: boolean;
@@ -32,6 +33,8 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
     event.stopPropagation();
     dispatch(changeSelectedId(id));
   }
+
+  useBindCanvasKeyPress();
 
   if (loading)
     return (
