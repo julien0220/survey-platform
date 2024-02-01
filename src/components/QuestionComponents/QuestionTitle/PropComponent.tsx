@@ -5,7 +5,7 @@ import { QuestionTitlePropsType } from "../QuestionTitle";
 const PropComponent: FC<QuestionTitlePropsType> = (
   props: QuestionTitlePropsType
 ) => {
-  const { text, level, isCenter, onChange } = props;
+  const { text, level, isCenter, onChange, disabled } = props;
   const [form] = Form.useForm();
 
   function handleValuesChange() {
@@ -24,6 +24,7 @@ const PropComponent: FC<QuestionTitlePropsType> = (
       initialValues={{ text, level, isCenter }}
       onValuesChange={handleValuesChange}
       form={form}
+      disabled={disabled}
     >
       <Form.Item
         label="标题内容"
