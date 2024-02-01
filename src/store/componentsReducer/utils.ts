@@ -1,4 +1,3 @@
-import { ComponentElement } from "react";
 import { ComponentInfoType, ComponentsStateType } from "./index";
 
 export function getNextSelectedId(
