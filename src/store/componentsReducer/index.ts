@@ -3,12 +3,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {produce} from "immer";
 import { ComponentPropsType } from "../../components/QuestionComponents";
 import {getNextSelectedId} from "./utils";
+import { ComponentState } from "react";
 
 export type ComponentInfoType = {
   fe_id: string; //
   type: string;
   title: string;
   isHidden?: boolean,
+  isLocked?: boolean,
   props: ComponentPropsType;
 };
 
@@ -100,11 +102,21 @@ export const componentsSlice = createSlice({
         
       }),
 
+      // 锁定/解锁组件
+      toggleComponentLocked: produce((draft:ComponentsStateType,action:PayloadAction<{fe_id:string}>)=>{
+        const {fe_id} = action.payload;
+        const {componentList} = draft;
+        const curComp = componentList.find((c) => c.fe_id === fe_id);
+        if (curComp) {
+          curComp.isLocked = !curComp.isLocked;
+        }
+      })
+
       
   
   }
 });
 
-export const { resetComponents, changeSelectedId, addComponent, changeComponentProps, deleteSelectedComponent, changeComponentHidden  } = componentsSlice.actions;
+export const { resetComponents, changeSelectedId, addComponent, changeComponentProps, deleteSelectedComponent, changeComponentHidden, toggleComponentLocked  } = componentsSlice.actions;
 
 export default componentsSlice.reducer;
