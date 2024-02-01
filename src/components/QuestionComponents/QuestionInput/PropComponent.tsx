@@ -5,15 +5,26 @@ import { QuestionInputPropsType } from "./interface";
 const PropComponent: FC<QuestionInputPropsType> = (
   props: QuestionInputPropsType
 ) => {
-  const { title, placeholder } = props;
+  const { title, placeholder, onChange } = props;
   const [form] = Form.useForm();
+
+  function handleValuesChange() {
+    if (onChange) {
+      onChange(form.getFieldsValue());
+    }
+  }
 
   useEffect(() => {
     form.setFieldsValue({ title, placeholder });
   }, [title, placeholder]);
 
   return (
-    <Form layout="vertical" initialValues={{ title, placeholder }} form={form}>
+    <Form
+      layout="vertical"
+      initialValues={{ title, placeholder }}
+      form={form}
+      onValuesChange={handleValuesChange}
+    >
       <Form.Item
         label="标题"
         name="title"

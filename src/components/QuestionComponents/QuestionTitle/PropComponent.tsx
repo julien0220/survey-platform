@@ -5,8 +5,14 @@ import { QuestionTitlePropsType } from "../QuestionTitle";
 const PropComponent: FC<QuestionTitlePropsType> = (
   props: QuestionTitlePropsType
 ) => {
-  const { text, level, isCenter } = props;
+  const { text, level, isCenter, onChange } = props;
   const [form] = Form.useForm();
+
+  function handleValuesChange() {
+    if (onChange) {
+      onChange(form.getFieldsValue());
+    }
+  }
 
   useEffect(() => {
     form.setFieldsValue({ text, level, isCenter });
@@ -16,6 +22,7 @@ const PropComponent: FC<QuestionTitlePropsType> = (
     <Form
       layout="vertical"
       initialValues={{ text, level, isCenter }}
+      onValuesChange={handleValuesChange}
       form={form}
     >
       <Form.Item
