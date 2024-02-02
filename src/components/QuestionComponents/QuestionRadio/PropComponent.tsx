@@ -3,6 +3,7 @@ import { Form, Input, Checkbox, Select, Button, Space } from "antd";
 import { QuestionRadioPropsType } from "./interface";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { OptionType } from "./interface";
+import { nanoid } from "@reduxjs/toolkit";
 
 const PropComponent: FC<QuestionRadioPropsType> = (
   props: QuestionRadioPropsType
@@ -12,7 +13,14 @@ const PropComponent: FC<QuestionRadioPropsType> = (
 
   function handleValuesChange() {
     if (onChange) {
-      onChange(form.getFieldsValue());
+      const newValues = form.getFieldsValue();
+      const { options = [] } = newValues as QuestionRadioPropsType;
+      options.forEach((opt) => {
+        if (opt.value) return;
+        opt.value = nanoid(5);
+      });
+
+      onChange(newValues);
     }
   }
 
