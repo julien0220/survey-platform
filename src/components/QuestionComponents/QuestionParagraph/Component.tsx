@@ -14,11 +14,18 @@ const Component: FC<QuestionParagraphPropsType> = (
     ...QuestionParagraphDefaultProps,
     ...props
   };
+  // const t = text.replaceAll("\n", "<br>");
+  const textList = text.split("\n");
   return (
     <Paragraph
       style={{ textAlign: isCenter ? "center" : "start", marginBottom: 0 }}
     >
-      {text}
+      {textList.map((t, index) => (
+        <span key={index}>
+          {index > 0 && <br />}
+          {t}
+        </span>
+      ))}
     </Paragraph>
   );
 };
