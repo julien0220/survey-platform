@@ -2,6 +2,7 @@ import React, { FC, useEffect } from "react";
 import { Form, Input, Checkbox, Select, Button, Space } from "antd";
 import { QuestionRadioPropsType } from "./interface";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { OptionType } from "./interface";
 
 const PropComponent: FC<QuestionRadioPropsType> = (
   props: QuestionRadioPropsType
@@ -44,7 +45,21 @@ const PropComponent: FC<QuestionRadioPropsType> = (
                   <Space key={key} align="baseline">
                     <Form.Item
                       name={[name, "text"]}
-                      rules={[{ required: true, message: "请输入选项文字" }]}
+                      rules={[
+                        { required: true, message: "请输入选项文字" },
+                        {
+                          validator: (_, text) => {
+                            const { options = [] } = form.getFieldsValue();
+                            let num = 0;
+                            options.forEach((option: OptionType) => {
+                              if (option.text === text) num++;
+                            });
+                            return num === 1
+                              ? Promise.resolve()
+                              : Promise.reject("和其他选项重复了");
+                          }
+                        }
+                      ]}
                     >
                       <Input placeholder="输入选项文字..."></Input>
                     </Form.Item>
