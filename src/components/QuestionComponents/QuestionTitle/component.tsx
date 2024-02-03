@@ -12,7 +12,6 @@ const QuestionTitle: FC<QuestionTitlePropsType> = (
     level = 1,
     isCenter = false
   } = { ...QuestionTitleDefaultProps, ...props };
-  console.log(isCenter);
   const genFontSize = (level: number) => {
     if (level === 1) return "24px";
     if (level === 2) return "20px";
