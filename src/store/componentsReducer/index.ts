@@ -4,6 +4,7 @@ import {produce} from "immer";
 import { ComponentPropsType } from "../../components/QuestionComponents";
 import {getNextSelectedId, insertNewComponent} from "./utils";
 import cloneDeep from "lodash.clonedeep";
+import {arrayMove} from "@dnd-kit/sortable";
 
 export type ComponentInfoType = {
   fe_id: string; //
@@ -149,6 +150,23 @@ export const componentsSlice = createSlice({
         if (selectedIndex === componentList.length - 1) return;
 
         draft.selectedId = componentList[selectedIndex + 1].fe_id;
+      }),
+
+      // 修改组件标题
+      changeComponentTitle: produce((draft: ComponentsStateType, action: PayloadAction<{fe_id: string; newTitle: string}>) => {
+        const {fe_id, newTitle} = action.payload;
+        const {componentList} = draft;
+        const curComp = componentList.find((c) => c.fe_id === fe_id);
+        if (curComp) {
+          curComp.title = newTitle;
+        }
+      }),
+
+      // 移动旧元素到新元素
+      moveComponent: produce((draft:ComponentsStateType, action:PayloadAction<{oldIndex:number, newIndex:number}>)=>{
+        const {componentList: oldList} = draft;
+        const {oldIndex, newIndex} = action.payload;
+        draft.componentList = arrayMove(oldList, oldIndex, newIndex);
       })
 
 
@@ -161,6 +179,7 @@ export const { resetComponents, changeSelectedId, addComponent,
   changeComponentProps, deleteSelectedComponent, 
   changeComponentHidden, toggleComponentLocked, 
   copySelectedComponent, pasteSelectedComponent,
-  selectPrevComponent, selectNextComponent  } = componentsSlice.actions;
+  selectPrevComponent, selectNextComponent,
+  changeComponentTitle, moveComponent  } = componentsSlice.actions;
 
 export default componentsSlice.reducer;
