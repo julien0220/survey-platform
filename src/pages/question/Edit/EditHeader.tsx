@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./EditHeader.module.scss";
 import { EditOutlined, LeftOutlined, LoadingOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Typography } from "antd";
+import { Button, Input, Space, Typography, message } from "antd";
 import EditToolbar from "./EditToolbar";
 import useGetPageInfo from "../../../hooks/useGetPageInfo";
 import { useDispatch } from "react-redux";
@@ -88,6 +88,36 @@ const SaveButton: FC = () => {
     </Button>
   );
 };
+const PublishButton: FC = () => {
+  const nav = useNavigate();
+  const { id } = useParams();
+  const { componentList = [] } = useGetComponentInfo();
+  const pageInfo = useGetPageInfo();
+  console.log("componentList", componentList);
+  console.log("pageInfo", pageInfo);
+  const { loading, run: pub } = useRequest(
+    async () => {
+      if (!id) return;
+      await updateQuestionService(id, {
+        ...pageInfo,
+        componentList,
+        isPublished: true // 问卷发布
+      });
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success("发布成功");
+        nav("/question/stat/" + id);
+      }
+    }
+  );
+  return (
+    <Button onClick={pub} type={"primary"} disabled={loading}>
+      发布
+    </Button>
+  );
+};
 
 const EditHeader: FC = () => {
   const nav = useNavigate();
@@ -114,7 +144,7 @@ const EditHeader: FC = () => {
         <div className={styles.right}>
           <Space>
             <SaveButton />
-            <Button type="primary">发布</Button>
+            <PublishButton />
           </Space>
         </div>
       </div>
