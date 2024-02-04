@@ -8,7 +8,7 @@ import useGetPageInfo from "../../../hooks/useGetPageInfo";
 import { useDispatch } from "react-redux";
 import { changePageTitle } from "../../../store/pageInfoReducer";
 import useGetComponentInfo from "../../../hooks/useGetComponentInfo";
-import { useKeyPress, useRequest } from "ahooks";
+import { useDebounceEffect, useKeyPress, useRequest } from "ahooks";
 import { updateQuestionService } from "../../../services/question";
 
 const { Title } = Typography;
@@ -61,6 +61,15 @@ const SaveButton: FC = () => {
       manual: true
     }
   );
+
+  useDebounceEffect(
+    () => {
+      save();
+    },
+    [componentList, pageInfo],
+    { wait: 1000 }
+  );
+
   useKeyPress(["ctrl.s", "meta.s"], (event) => {
     event.preventDefault();
     if (!loading) save();
