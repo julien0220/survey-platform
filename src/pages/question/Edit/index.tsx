@@ -5,7 +5,7 @@ import EditCanvas from "./EditCanvas";
 import { useDispatch } from "react-redux";
 import { changeSelectedId } from "../../../store/componentsReducer";
 import LeftPanel from "./leftPanel";
-import RightPanel from "./rightPanel";
+import RightPanel from "./RightPanel";
 import EditHeader from "./EditHeader";
 
 const Edit: FC = () => {

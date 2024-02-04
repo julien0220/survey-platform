@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useRequest } from "ahooks";
 import { getQuestionService } from "../services/question";
 import { resetComponents } from "../store/componentsReducer";
+import { resetPageInfo } from "../store/pageInfoReducer";
 
 function useLoadQuestionData() {
   const dispatch = useDispatch();
@@ -23,7 +24,13 @@ function useLoadQuestionData() {
   useEffect(() => {
     if (!data) return;
 
-    const { title = "", componentList = [] } = data;
+    const {
+      title = "",
+      componentList = [],
+      desc = "",
+      js = "",
+      css = ""
+    } = data;
 
     const selectedId = componentList.length > 0 ? componentList[0].fe_id : ""; // 默认选中第一个组件
 
@@ -35,6 +42,8 @@ function useLoadQuestionData() {
         copiedComponent: null
       })
     );
+
+    dispatch(resetPageInfo({ title, desc, js, css }));
   }, [data]);
 
   // 判断 id 变化，执行 ajax 加载问卷数据
