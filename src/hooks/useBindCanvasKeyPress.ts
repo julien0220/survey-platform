@@ -6,6 +6,7 @@ import {
   pasteSelectedComponent,
   selectNextComponent
 } from "../store/componentsReducer";
+import { ActionCreators as UndoActionCreators } from "redux-undo";
 import { selectPrevComponent } from "../store/componentsReducer";
 
 function isActiveElementValid() {
@@ -47,6 +48,22 @@ function useBindCanvasKeyPress() {
   useKeyPress("downarrow", () => {
     if (!isActiveElementValid()) return;
     dispatch(selectNextComponent());
+  });
+
+  // 撤销
+  useKeyPress(
+    ["ctrl.z", "meta.z"],
+    () => {
+      dispatch(UndoActionCreators.undo());
+    },
+    {
+      exactMatch: true // 严格匹配，必须只要这两个按键才能触发。
+    }
+  );
+
+  // 重做
+  useKeyPress(["ctrl.shift.z", "meta.shift.z"], () => {
+    dispatch(UndoActionCreators.redo());
   });
 }
 
