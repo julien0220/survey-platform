@@ -10,7 +10,12 @@ import { selectPrevComponent } from "../store/componentsReducer";
 
 function isActiveElementValid() {
   const activeElem = document.activeElement;
-  return activeElem === document.body ? true : false;
+  // 没有增加dnd-kit之前可以正常使用
+  // if (activeElem === document.body) return true; // 光标没有focus 到 input
+
+  // 增加dnd-kit之后
+  if (activeElem == document.body) return true;
+  if (activeElem?.matches('div[role="button"]')) return true; // matches:匹配这个元素是不是符合某一个css查询器
 }
 
 function useBindCanvasKeyPress() {
