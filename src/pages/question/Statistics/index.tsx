@@ -6,6 +6,7 @@ import { Button, Result, Spin } from "antd";
 import useGetPageInfo from "../../../hooks/useGetPageInfo";
 import StatHeader from "./StatHeader";
 import PageStat from "./PageStat";
+import ChartStat from "./ChartStat";
 import styles from "./index.module.scss";
 import ComponentList from "./ComponentList";
 
@@ -63,7 +64,12 @@ const Statistics: FC = () => {
             setSelectedComponentType={setSelectedComponentType}
           />
         </div>
-        <div className={styles.right}>右侧</div>
+        <div className={styles.right}>
+          <ChartStat
+            selectedComponentId={selectedComponentId}
+            selectedComponentType={selectedComponentType}
+          />
+        </div>
       </>
     );
   }
