@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import useLoadQuestionData from "../../../hooks/useLoadQuestionData";
 import { useTitle } from "ahooks";
 import { useNavigate } from "react-router-dom";
@@ -6,11 +6,15 @@ import { Button, Result, Spin } from "antd";
 import useGetPageInfo from "../../../hooks/useGetPageInfo";
 import StatHeader from "./StatHeader";
 import styles from "./index.module.scss";
+import ComponentList from "./ComponentList";
 
 const Statistics: FC = () => {
   const nav = useNavigate();
   const { loading } = useLoadQuestionData();
   const { isPublished, title } = useGetPageInfo();
+
+  const [selectedComponentId, setSelectedComponentId] = useState("");
+  const [selectedComponentType, setSelectedComponentType] = useState("");
 
   useTitle(`问卷统计 - ${title}`);
 
@@ -44,7 +48,13 @@ const Statistics: FC = () => {
 
     return (
       <>
-        <div className={styles.left}>左侧</div>
+        <div className={styles.left}>
+          <ComponentList
+            selectedComponentId={selectedComponentId}
+            setSelectedComponentId={setSelectedComponentId}
+            setSelectedComponentType={setSelectedComponentType}
+          />
+        </div>
         <div className={styles.main}>中间</div>
         <div className={styles.right}>右侧</div>
       </>
