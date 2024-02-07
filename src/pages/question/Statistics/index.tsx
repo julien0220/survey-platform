@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Result, Spin } from "antd";
 import useGetPageInfo from "../../../hooks/useGetPageInfo";
 import StatHeader from "./StatHeader";
+import PageStat from "./PageStat";
 import styles from "./index.module.scss";
 import ComponentList from "./ComponentList";
 
@@ -55,7 +56,13 @@ const Statistics: FC = () => {
             setSelectedComponentType={setSelectedComponentType}
           />
         </div>
-        <div className={styles.main}>中间</div>
+        <div className={styles.main}>
+          <PageStat
+            selectedComponentId={selectedComponentId}
+            setSelectedComponentId={setSelectedComponentId}
+            setSelectedComponentType={setSelectedComponentType}
+          />
+        </div>
         <div className={styles.right}>右侧</div>
       </>
     );
