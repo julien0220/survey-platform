@@ -13,7 +13,8 @@ import QuestionRadioConf, {
   QuestionRadioStatPropsType
 } from "./QuestionRadio";
 import QuestionCheckboxConf, {
-  QuestionCheckboxPropsType
+  QuestionCheckboxPropsType,
+  QuestionCheckboxStatPropsType
 } from "./QuestionCheckbox";
 
 // 各个组件的 prop type
@@ -26,7 +27,8 @@ export type ComponentPropsType = QuestionInputPropsType &
   QuestionCheckboxPropsType;
 
 // 各个组件的统计属性类型
-type ComponentStatPropsType = QuestionRadioStatPropsType;
+type ComponentStatPropsType = QuestionRadioStatPropsType &
+  QuestionCheckboxStatPropsType;
 
 // 组件的配置
 export type ComponentConfType = {
@@ -69,5 +71,7 @@ export const componentConfGroup = [
 ];
 
 export function getComponentConfByType(type: string) {
-  return componentConfList.find((c) => c.type === type);
+  return componentConfList.find((c) => {
+    return c.type === type;
+  });
 }

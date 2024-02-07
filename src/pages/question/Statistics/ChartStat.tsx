@@ -1,8 +1,9 @@
 import React, { FC, useEffect, useState } from "react";
 import { Typography } from "antd";
-import { getComponentStatService } from "../../../services/stat";
 import { useParams } from "react-router-dom";
 import { useRequest } from "ahooks";
+import { getComponentStatService } from "../../../services/stat";
+import { getComponentConfByType } from "../../../components/QuestionComponents";
 
 const { Title } = Typography;
 
@@ -32,7 +33,17 @@ const ChartStat: FC<PropsType> = (props: PropsType) => {
 
   function genStatElem() {
     if (!selectedComponentId) return <div>未选中组件</div>;
-    else return <div>{JSON.stringify(stat)}</div>;
+
+    const { StatComponent } =
+      getComponentConfByType(selectedComponentType) || {};
+    console.log(StatComponent);
+    return StatComponent !== null && StatComponent !== undefined ? (
+      <div>
+        <StatComponent stat={stat as { name: string; count: number }[]} />
+      </div>
+    ) : (
+      <div>该组件无统计图表</div>
+    );
   }
 
   return (
