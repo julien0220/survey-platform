@@ -29,7 +29,8 @@ function useLoadQuestionData() {
       componentList = [],
       desc = "",
       js = "",
-      css = ""
+      css = "",
+      isPublished = false
     } = data;
 
     const selectedId = componentList.length > 0 ? componentList[0].fe_id : ""; // 默认选中第一个组件
@@ -43,7 +44,7 @@ function useLoadQuestionData() {
       })
     );
 
-    dispatch(resetPageInfo({ title, desc, js, css }));
+    dispatch(resetPageInfo({ title, desc, js, css, isPublished }));
   }, [data]);
 
   // 判断 id 变化，执行 ajax 加载问卷数据

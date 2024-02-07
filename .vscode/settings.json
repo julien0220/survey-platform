@@ -13,6 +13,7 @@
         "mockjs",
         "Popconfirm",
         "Propcomponent",
+        "qrcode",
         "reduxjs",
         "undoable",
         "uparrow"

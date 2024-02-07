@@ -1,9 +1,11 @@
 import React, { FC } from "react";
 import useLoadQuestionData from "../../../hooks/useLoadQuestionData";
+import { useTitle } from "ahooks";
 import styles from "./index.module.scss";
 import EditCanvas from "./EditCanvas";
 import { useDispatch } from "react-redux";
 import { changeSelectedId } from "../../../store/componentsReducer";
+import useGetPageInfo from "../../../hooks/useGetPageInfo";
 import LeftPanel from "./leftPanel";
 import RightPanel from "./RightPanel";
 import EditHeader from "./EditHeader";
@@ -11,6 +13,10 @@ import EditHeader from "./EditHeader";
 const Edit: FC = () => {
   const { loading } = useLoadQuestionData();
   const dispatch = useDispatch();
+  const { title } = useGetPageInfo();
+
+  useTitle(`问卷编辑 - ${title}`);
+
   function clearSelectedId() {
     dispatch(changeSelectedId(""));
   }
