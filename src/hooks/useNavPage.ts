@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   isLoginOrRegisterPage,
   MANAGE_INDEX_PATHNAME,
-  isNoNeddUserInfo,
+  isNoNeedUserInfo,
   LOGIN_PATHNAME
 } from "../router";
 
@@ -23,7 +23,7 @@ function useNavPage(waitngUserData: boolean) {
     }
 
     // 未登录状态
-    if (isNoNeddUserInfo(pathname)) return;
+    if (isNoNeedUserInfo(pathname)) return;
     else nav(LOGIN_PATHNAME);
   }, [username, pathname]);
 }
