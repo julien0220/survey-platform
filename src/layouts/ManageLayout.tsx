@@ -33,11 +33,8 @@ const ManageLayout: FC = () => {
     {
       manual: true,
       onSuccess: (data) => {
-        const { id } = data || {};
-        if (id) {
-          nav(`/question/edit/${id}`);
-          message.success("创建成功");
-        }
+        nav(`/question/edit/${data.id || data._id}`);
+        message.success("创建成功");
       }
     }
   );

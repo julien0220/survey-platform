@@ -1,9 +1,9 @@
 import axios from "axios";
 import { message } from "antd";
 import { getToken } from "../utils/user-token";
-import { error } from "console";
 
 const instance = axios.create({
+  baseURL: "http://localhost:3001/",
   timeout: 10 * 1000
 });
 
