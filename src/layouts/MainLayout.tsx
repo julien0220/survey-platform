@@ -10,8 +10,8 @@ import useNavPage from "../hooks/useNavPage";
 const { Header, Content, Footer } = Layout;
 
 const MainLayout: FC = () => {
-  const { waitngUserData } = useLoadUserData();
-  useNavPage(waitngUserData);
+  const { waitingUserData } = useLoadUserData();
+  useNavPage(waitingUserData);
   return (
     <Layout>
       <Header className={styles.header}>
@@ -23,7 +23,7 @@ const MainLayout: FC = () => {
         </div>
       </Header>
       <Content className={styles.main}>
-        {waitngUserData ? (
+        {waitingUserData ? (
           <div style={{ textAlign: "center", marginTop: "70px" }}>
             <Spin />
           </div>

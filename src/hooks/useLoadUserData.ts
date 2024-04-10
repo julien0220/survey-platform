@@ -6,7 +6,7 @@ import { loginReducer } from "../store/userReducer";
 import { useDispatch } from "react-redux";
 
 function useLoadUserData() {
-  const [waitngUserData, setWaitingUserData] = useState(true); // ajax加载需要时间
+  const [waitingUserData, setWaitingUserData] = useState(true); // ajax加载需要时间
   const { username } = useGetUserInfo();
   const dispatch = useDispatch();
 
@@ -30,7 +30,7 @@ function useLoadUserData() {
   }, [username]);
 
   // ajax 加载完用户信息后放在 redux 中，不用返回，所以只需返回一个状态
-  return { waitngUserData };
+  return { waitingUserData };
 }
 
 export default useLoadUserData;

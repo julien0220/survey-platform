@@ -8,12 +8,14 @@ import {
   LOGIN_PATHNAME
 } from "../router";
 
-function useNavPage(waitngUserData: boolean) {
+function useNavPage(waitingUserData: boolean) {
   const nav = useNavigate();
   const { pathname } = useLocation();
   const { username } = useGetUserInfo();
   useEffect(() => {
-    if (waitngUserData) return;
+    if (waitingUserData) {
+      return;
+    }
     if (username) {
       // 登录状态
       if (isLoginOrRegisterPage(pathname)) {
