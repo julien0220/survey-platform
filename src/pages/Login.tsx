@@ -10,36 +10,39 @@ import {
   message
 } from "antd";
 import { UserAddOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
 import { REGISTER_PATHNAME, MANAGE_INDEX_PATHNAME } from "../router";
 import { loginService } from "../services/user";
 import styles from "./Login.module.scss";
 import { useRequest } from "ahooks";
+import { loginReducer } from "../store/userReducer";
 import { setToken } from "../utils/user-token";
 
 const { Title } = Typography;
 
 const USERNAME_KEY = "USERNAME";
-const PADSWORD_KEY = "PASSWORD";
+const PASSWORD_KEY = "PASSWORD";
 
 function rememberUser(username: string, password: string) {
   localStorage.setItem(USERNAME_KEY, username);
-  localStorage.setItem(PADSWORD_KEY, password);
+  localStorage.setItem(PASSWORD_KEY, password);
 }
 
 function deleteUserFromStorage() {
   localStorage.removeItem(USERNAME_KEY);
-  localStorage.removeItem(PADSWORD_KEY);
+  localStorage.removeItem(PASSWORD_KEY);
 }
 
 function getUserFromStorage() {
   return {
     username: localStorage.getItem(USERNAME_KEY),
-    password: localStorage.getItem(PADSWORD_KEY)
+    password: localStorage.getItem(PASSWORD_KEY)
   };
 }
 
 const Login: FC = () => {
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
   const nav = useNavigate();
   useEffect(() => {
     const { username, password } = getUserFromStorage();
@@ -56,12 +59,15 @@ const Login: FC = () => {
     {
       manual: true,
       onSuccess(result) {
-        const { token } = result || {};
+        const { token } = result.data || {};
         // 存储 token
         setToken(token);
 
-        message.success("登录成功");
+        dispatch(
+          loginReducer({ username: result.username, nickname: result.username })
+        );
         nav(MANAGE_INDEX_PATHNAME);
+        message.success("登录成功");
       }
     }
   );
