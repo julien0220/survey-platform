@@ -22,7 +22,7 @@ const ChartStat: FC<PropsType> = (props: PropsType) => {
     {
       manual: true,
       onSuccess: (res) => {
-        setStat(res.stat);
+        setStat(res.stat.list);
       }
     }
   );
@@ -36,7 +36,6 @@ const ChartStat: FC<PropsType> = (props: PropsType) => {
 
     const { StatComponent } =
       getComponentConfByType(selectedComponentType) || {};
-    console.log(StatComponent);
     return StatComponent !== null && StatComponent !== undefined ? (
       <div>
         <StatComponent stat={stat as { name: string; count: number }[]} />
