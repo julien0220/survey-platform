@@ -9,24 +9,15 @@ import {
 } from "@ant-design/icons";
 import { useRequest } from "ahooks";
 import { createQuestionService } from "../services/question";
+import CreateSurveyAI from "../components/CreateSurveyAI";
 import styles from "./ManageLayout.module.scss";
 
 const ManageLayout: FC = () => {
   const nav = useNavigate();
   const { pathname } = useLocation();
 
-  //   const [loading, setLoading] = useState(false);
-
-  //   async function handleCreateClick() {
-  //     setLoading(true);
-  //     const data = await createQuestionService();
-  //     const { id } = data || {};
-  //     if (id) {
-  //       nav(`/question/edit/${id}`);
-  //       message.success("创建成功");
-  //     }
-  //     setLoading(false);
-  //   }
+  const [createAIStatus, setCreateAIStatus] = useState(false);
+  const [windowOpen, setWindowOpen] = useState(false);
 
   const { loading, run: handleCreateClick } = useRequest(
     createQuestionService,
@@ -38,6 +29,11 @@ const ManageLayout: FC = () => {
       }
     }
   );
+
+  const handleCreateAIClick = () => {
+    setCreateAIStatus(true);
+    setWindowOpen(true);
+  };
 
   return (
     <div className={styles.container}>
@@ -51,6 +47,15 @@ const ManageLayout: FC = () => {
             disabled={loading}
           >
             新建问卷
+          </Button>
+          <Button
+            type="primary"
+            size="large"
+            icon={<PlusOutlined />}
+            onClick={handleCreateAIClick}
+            disabled={windowOpen}
+          >
+            AI 创建问卷
           </Button>
           <Divider style={{ borderTop: "transparent" }} />
           <Button
@@ -87,6 +92,11 @@ const ManageLayout: FC = () => {
       </div>
       <div className={styles.right}>
         <Outlet />
+      </div>
+      <div className={styles.createAI}>
+        {windowOpen && (
+          <CreateSurveyAI value={windowOpen} onChange={setWindowOpen} />
+        )}
       </div>
     </div>
   );

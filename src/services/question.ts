@@ -9,6 +9,13 @@ type SearchOption = {
   pageSize: number;
 };
 
+type HistoryItem = {
+  userMsg: string;
+  assistantMsg: string;
+};
+
+type ChatHistory = HistoryItem[];
+
 // 获取单个问卷信息
 export async function getQuestionService(id: string): Promise<ResDataType> {
   const url = `/api/question/${id}`;
@@ -57,5 +64,28 @@ export async function deleteQuestionService(
 ): Promise<ResDataType> {
   const url = `/api/question`;
   const data = (await axios.delete(url, { data: { ids } })) as ResDataType;
+  return data;
+}
+
+// ai
+export async function getCreateQuestionAiService({
+  text,
+  history,
+  onMessage
+}: {
+  text: string;
+  history: ChatHistory;
+  onMessage: (msg: string) => void;
+}): Promise<ResDataType> {
+  const url = `/api/question/getAiInfo`;
+  const data = (await axios.post(
+    url,
+    {
+      text,
+      history,
+      onMessage
+    },
+    { timeout: 90000 }
+  )) as ResDataType;
   return data;
 }
