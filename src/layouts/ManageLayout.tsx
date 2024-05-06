@@ -16,7 +16,7 @@ const ManageLayout: FC = () => {
   const nav = useNavigate();
   const { pathname } = useLocation();
 
-  const [createAIStatus, setCreateAIStatus] = useState(false);
+  // const [createAIStatus, setCreateAIStatus] = useState(false);
   const [windowOpen, setWindowOpen] = useState(false);
 
   const { loading, run: handleCreateClick } = useRequest(
@@ -31,7 +31,7 @@ const ManageLayout: FC = () => {
   );
 
   const handleCreateAIClick = () => {
-    setCreateAIStatus(true);
+    // setCreateAIStatus(true);
     setWindowOpen(true);
   };
 

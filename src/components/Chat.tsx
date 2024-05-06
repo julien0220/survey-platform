@@ -1,13 +1,20 @@
 import React, { useState, FC, useRef, useEffect } from "react";
 import { Button, Input, Space } from "antd";
-import callQwen from "../services/create-ai";
 import { getCreateQuestionAiService } from "../services/question";
 import {
+  CheckCircleOutlined,
   CloseOutlined,
   LoadingOutlined,
   RightCircleOutlined
 } from "@ant-design/icons";
 import styles from "./Chat.module.scss";
+import { AISurveyType, SurveyItem } from "../constant/index";
+import {
+  createQuestionService,
+  updateQuestionService
+} from "../services/question";
+import { nanoid } from "nanoid";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 
@@ -17,9 +24,11 @@ interface ChildComponentProps {
 }
 
 const Chat: FC<ChildComponentProps> = ({ value, onChange }) => {
+  const nav = useNavigate();
   const messagesEndRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [inputText, setInputText] = useState("");
+  const [answerSurvey, setAnswerSurvey] = useState<SurveyItem[]>([]);
   const [messages, setMessages] = useState([
     { id: 1, text: "你好，我是 AI 小助手。", sender: "bot" },
     {
@@ -58,22 +67,95 @@ const Chat: FC<ChildComponentProps> = ({ value, onChange }) => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     setIsLoading(true);
     setInputText("");
-    const te = JSON.stringify(
-      await getCreateQuestionAiService({
-        text: inputText,
-        history: [{ userMsg: "", assistantMsg: "" }],
-        onMessage: (msg: string) => {}
-      })
-    )
-      .split('"')
-      .join("");
+    let time = 3;
+    while (time--) {
+      const te = JSON.stringify(
+        await getCreateQuestionAiService({
+          text: inputText,
+          history: [{ userMsg: "", assistantMsg: "" }],
+          onMessage: (msg: string) => {}
+        })
+      );
+      const obj = JSON.parse(te);
+      handleCreateSurvey(obj);
+    }
+
     const replyMessage = {
       id: messages.length + 2,
-      text: te,
-      sender: "bot"
+      text: "ok",
+      sender: "AI-Survey"
     };
     setMessages((prevMessages) => [...prevMessages, replyMessage]);
     setIsLoading(false);
+  };
+
+  const handleCreateSurvey = async (da: AISurveyType) => {
+    const data = String(da);
+    console.log("da", da);
+    console.log("data", data);
+    const obj = JSON.parse(data);
+    const { title, info, radio, checkbox } = obj;
+    const survey = await createQuestionService();
+    const componentInfo = {
+      fe_id: nanoid(),
+      type: "questionInfo",
+      title: title,
+      props: {
+        title: title,
+        desc: info
+      }
+    };
+    const radioComponents = radio.map((item: any) => {
+      return {
+        fe_id: nanoid(),
+        title: "单选",
+        type: "questionRadio",
+        props: {
+          title: item.title,
+          options: item.options.map((opt: any, index: any) => {
+            return {
+              value: index,
+              text: opt
+            };
+          }),
+          isVertical: true
+        }
+      };
+    });
+    const checkboxComponents = checkbox.map((item: any) => {
+      return {
+        fe_id: nanoid(),
+        title: "多选",
+        type: "questionCheckbox",
+        props: {
+          title: item.title + "(多选)",
+          list: item.options.map((opt: any, index: any) => {
+            return {
+              value: index,
+              text: opt,
+              checked: false
+            };
+          }),
+          isVertical: true
+        }
+      };
+    });
+    const res = await updateQuestionService(survey.id || survey._id, {
+      title: title,
+      desc: info,
+      isPublished: true,
+      componentList: [componentInfo, ...radioComponents, ...checkboxComponents]
+    });
+    // console.log("res", res);
+    setAnswerSurvey((answerSurvey) => [
+      ...answerSurvey,
+      {
+        fe_id: survey.id || survey._id,
+        id: answerSurvey.length + 1,
+        title: title,
+        desc: info
+      }
+    ]);
   };
 
   const handleInputChange = (event: any) => {
@@ -100,7 +182,56 @@ const Chat: FC<ChildComponentProps> = ({ value, onChange }) => {
                     : styles["chat-message-left"]
                 }
               >
-                {message.text}
+                {message.sender !== "AI-Survey" ? (
+                  message.text
+                ) : (
+                  <div>
+                    <CheckCircleOutlined
+                      style={{ marginRight: "4px", color: "green" }}
+                    />
+                    以下是问问AI想到的方向,希望能帮到您:
+                    {answerSurvey.map((item) => (
+                      <div
+                        key={item.id}
+                        style={{
+                          marginTop: "6px",
+                          backgroundColor: "#f5f6fa",
+                          borderRadius: "4px",
+                          padding: "10px"
+                        }}
+                      >
+                        <div>
+                          {item.id + `.`}
+                          {item.title}
+                        </div>
+                        <div style={{ marginTop: "6px" }}>{item.desc}</div>
+                        <Space>
+                          <Button
+                            size="small"
+                            style={{ marginTop: "6px", fontSize: "12px" }}
+                            onClick={() => {
+                              nav(`/question/edit/${item.fe_id}`);
+                            }}
+                          >
+                            创建问卷
+                          </Button>
+                          <Button
+                            size="small"
+                            style={{ marginTop: "6px", fontSize: "12px" }}
+                            onClick={() => {
+                              window.open(
+                                `http://localhost:3000/question/${item.fe_id}`,
+                                "_blank"
+                              );
+                            }}
+                          >
+                            预览答题
+                          </Button>
+                        </Space>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           ))}

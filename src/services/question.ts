@@ -1,3 +1,4 @@
+import aiGenerateSurvey from "../utils/ai-generate-survey";
 import axios, { ResDataType } from "./ajax";
 
 type SearchOption = {
@@ -78,14 +79,18 @@ export async function getCreateQuestionAiService({
   onMessage: (msg: string) => void;
 }): Promise<ResDataType> {
   const url = `/api/question/getAiInfo`;
+  const textGenerate = aiGenerateSurvey(text);
+  console.log("text", text);
+  console.log("textGenerate", textGenerate);
   const data = (await axios.post(
     url,
     {
-      text,
+      text: textGenerate,
       history,
       onMessage
     },
     { timeout: 90000 }
   )) as ResDataType;
+  console.log("data", data);
   return data;
 }
