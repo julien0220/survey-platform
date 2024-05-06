@@ -86,7 +86,9 @@ const Chat: FC<ChildComponentProps> = ({ value, onChange }) => {
       sender: "AI-Survey"
     };
     setMessages((prevMessages) => [...prevMessages, replyMessage]);
+
     setIsLoading(false);
+    // setAnswerSurvey([]); 待解决
   };
 
   const handleCreateSurvey = async (da: AISurveyType) => {

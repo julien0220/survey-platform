@@ -42,9 +42,9 @@ const List: FC = () => {
     {
       manual: true,
       onSuccess(result) {
-        const { list: l = [], total = 0 } = result;
+        const { list: l = [], count = 0 } = result;
         setList(list.concat(l));
-        setTotal(total);
+        setTotal(count);
         setPage(page + 1);
       }
     }
