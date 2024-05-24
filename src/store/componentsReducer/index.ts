@@ -49,125 +49,125 @@ export const componentsSlice = createSlice({
     ),
 
     // 添加新组件
-      addComponent: produce((draft: ComponentsStateType, action: PayloadAction<ComponentInfoType>) => {
-        const newComponent = action.payload;
-        insertNewComponent(draft, newComponent);  
+    addComponent: produce((draft: ComponentsStateType, action: PayloadAction<ComponentInfoType>) => {
+      const newComponent = action.payload;
+      insertNewComponent(draft, newComponent);  
+    }
+    ),
+
+    // 修改组件属性
+    changeComponentProps: produce((draft:ComponentsStateType, action: PayloadAction<{fe_id: string; newProps: ComponentPropsType}>) =>{
+      const {fe_id, newProps} = action.payload;
+      const {componentList} = draft;
+      const curComp = componentList.find((c) => c.fe_id === fe_id);
+      if (curComp) {
+        curComp.props = {
+          ...curComp,
+          ...newProps
+        }
       }
-      ),
+    }),
 
-      // 修改组件属性
-      changeComponentProps: produce((draft:ComponentsStateType, action: PayloadAction<{fe_id: string; newProps: ComponentPropsType}>) =>{
-        const {fe_id, newProps} = action.payload;
-        const {componentList} = draft;
-        const curComp = componentList.find((c) => c.fe_id === fe_id);
-        if (curComp) {
-          curComp.props = {
-            ...curComp,
-            ...newProps
-          }
-        }
-      }),
-
-      // 删除选中的组件
-      deleteSelectedComponent: produce((draft: ComponentsStateType) => {
-        const {selectedId, componentList = []} = draft;
-        const index = componentList.findIndex((c) => c.fe_id === selectedId);
-        if (index >= 0) {
-          const newId = getNextSelectedId(selectedId, componentList);
-          draft.componentList.splice(index, 1);
-          draft.selectedId = newId;
-        }
-      }),
-
-      // 隐藏/显示组件
-      changeComponentHidden: produce((draft: ComponentsStateType, action: PayloadAction<{fe_id:string; isHidden:boolean}>) => {
-        const { componentList = []} = draft;
-        const {fe_id, isHidden} = action.payload;
-        const curComp = componentList.find((c) => c.fe_id === fe_id);
-        let newId = '';
-        if (isHidden) {
-          newId = getNextSelectedId(fe_id, componentList);
-        } else {
-          newId = fe_id;
-        }
-        
+    // 删除选中的组件
+    deleteSelectedComponent: produce((draft: ComponentsStateType) => {
+      const {selectedId, componentList = []} = draft;
+      const index = componentList.findIndex((c) => c.fe_id === selectedId);
+      if (index >= 0) {
+        const newId = getNextSelectedId(selectedId, componentList);
+        draft.componentList.splice(index, 1);
         draft.selectedId = newId;
-        if (curComp) {
-          curComp.isHidden = isHidden;
-        }
-        
-      }),
+      }
+    }),
 
-      // 锁定/解锁组件
-      toggleComponentLocked: produce((draft:ComponentsStateType,action:PayloadAction<{fe_id:string}>)=>{
-        const {fe_id} = action.payload;
-        const {componentList} = draft;
-        const curComp = componentList.find((c) => c.fe_id === fe_id);
-        if (curComp) {
-          curComp.isLocked = !curComp.isLocked;
-        }
-      }),
+    // 隐藏/显示组件
+    changeComponentHidden: produce((draft: ComponentsStateType, action: PayloadAction<{fe_id:string; isHidden:boolean}>) => {
+      const { componentList = []} = draft;
+      const {fe_id, isHidden} = action.payload;
+      const curComp = componentList.find((c) => c.fe_id === fe_id);
+      let newId = '';
+      if (isHidden) {
+        newId = getNextSelectedId(fe_id, componentList);
+      } else {
+        newId = fe_id;
+      }
+      
+      draft.selectedId = newId;
+      if (curComp) {
+        curComp.isHidden = isHidden;
+      }
+      
+    }),
 
-      // 拷贝当前选中的组件
-      copySelectedComponent: produce((draft: ComponentsStateType) => {
-        const {selectedId, componentList} = draft;
-        const curComp = componentList.find((c) => c.fe_id === selectedId);
-        if (curComp) {
-          draft.copiedComponent = cloneDeep(curComp);
-        }
-      }),
+    // 锁定/解锁组件
+    toggleComponentLocked: produce((draft:ComponentsStateType,action:PayloadAction<{fe_id:string}>)=>{
+      const {fe_id} = action.payload;
+      const {componentList} = draft;
+      const curComp = componentList.find((c) => c.fe_id === fe_id);
+      if (curComp) {
+        curComp.isLocked = !curComp.isLocked;
+      }
+    }),
 
-      // 粘贴组件
-      pasteSelectedComponent: produce((draft:ComponentsStateType)=>{
-        const {copiedComponent} = draft;
-        if (copiedComponent === null) return;
-        
-        // 修改fe_id
-        copiedComponent.fe_id = nanoid();
+    // 拷贝当前选中的组件
+    copySelectedComponent: produce((draft: ComponentsStateType) => {
+      const {selectedId, componentList} = draft;
+      const curComp = componentList.find((c) => c.fe_id === selectedId);
+      if (curComp) {
+        draft.copiedComponent = cloneDeep(curComp);
+      }
+    }),
 
-        // 插入
-        insertNewComponent(draft, copiedComponent);  
+    // 粘贴组件
+    pasteSelectedComponent: produce((draft:ComponentsStateType)=>{
+      const {copiedComponent} = draft;
+      if (copiedComponent === null) return;
+      
+      // 修改fe_id
+      copiedComponent.fe_id = nanoid();
 
-      }),
+      // 插入
+      insertNewComponent(draft, copiedComponent);  
 
-      // 选中上一个组件
-      selectPrevComponent: produce((draft: ComponentsStateType) => {
-        const {selectedId, componentList} = draft;
-        const selectedIndex = componentList.findIndex((c)=>c.fe_id === selectedId);
-        
-        if (selectedIndex < 0) return;
-        if (selectedIndex === 0) return;
+    }),
 
-        draft.selectedId = componentList[selectedIndex - 1].fe_id;
-      } ),
+    // 选中上一个组件
+    selectPrevComponent: produce((draft: ComponentsStateType) => {
+      const {selectedId, componentList} = draft;
+      const selectedIndex = componentList.findIndex((c)=>c.fe_id === selectedId);
+      
+      if (selectedIndex < 0) return;
+      if (selectedIndex === 0) return;
 
-      // 选中下一个组件
-      selectNextComponent: produce((draft: ComponentsStateType) => {
-        const {selectedId, componentList} = draft;
-        const selectedIndex = componentList.findIndex((c)=>c.fe_id === selectedId);
-        
-        if (selectedIndex < 0) return;
-        if (selectedIndex === componentList.length - 1) return;
+      draft.selectedId = componentList[selectedIndex - 1].fe_id;
+    } ),
 
-        draft.selectedId = componentList[selectedIndex + 1].fe_id;
-      }),
+    // 选中下一个组件
+    selectNextComponent: produce((draft: ComponentsStateType) => {
+      const {selectedId, componentList} = draft;
+      const selectedIndex = componentList.findIndex((c)=>c.fe_id === selectedId);
+      
+      if (selectedIndex < 0) return;
+      if (selectedIndex === componentList.length - 1) return;
 
-      // 修改组件标题
-      changeComponentTitle: produce((draft: ComponentsStateType, action: PayloadAction<{fe_id: string; newTitle: string}>) => {
-        const {fe_id, newTitle} = action.payload;
-        const {componentList} = draft;
-        const curComp = componentList.find((c) => c.fe_id === fe_id);
-        if (curComp) {
-          curComp.title = newTitle;
-        }
-      }),
+      draft.selectedId = componentList[selectedIndex + 1].fe_id;
+    }),
 
-      // 移动旧元素到新元素
-      moveComponent: produce((draft:ComponentsStateType, action:PayloadAction<{oldIndex:number, newIndex:number}>)=>{
-        const {componentList: oldList} = draft;
-        const {oldIndex, newIndex} = action.payload;
-        draft.componentList = arrayMove(oldList, oldIndex, newIndex);
-      })
+    // 修改组件标题
+    changeComponentTitle: produce((draft: ComponentsStateType, action: PayloadAction<{fe_id: string; newTitle: string}>) => {
+      const {fe_id, newTitle} = action.payload;
+      const {componentList} = draft;
+      const curComp = componentList.find((c) => c.fe_id === fe_id);
+      if (curComp) {
+        curComp.title = newTitle;
+      }
+    }),
+
+    // 移动旧元素到新元素
+    moveComponent: produce((draft:ComponentsStateType, action:PayloadAction<{oldIndex:number, newIndex:number}>)=>{
+      const {componentList: oldList} = draft;
+      const {oldIndex, newIndex} = action.payload;
+      draft.componentList = arrayMove(oldList, oldIndex, newIndex);
+    })
 
 
       

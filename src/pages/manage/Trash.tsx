@@ -19,6 +19,7 @@ import {
   updateQuestionService
 } from "../../services/question";
 import ListPage from "../../components/ListPage";
+import moment from "moment";
 
 import styles from "./Common.module.scss";
 
@@ -93,7 +94,10 @@ const Trash: FC = () => {
     },
     {
       title: "创建时间",
-      dataIndex: "createAt"
+      dataIndex: "createdAt",
+      render: (createdAt: string) => {
+        return moment(createdAt).format("YYYY-MM-DD HH:mm:ss");
+      }
     }
   ];
 

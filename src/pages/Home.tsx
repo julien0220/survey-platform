@@ -1,7 +1,8 @@
-import React, { FC, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { FC } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Typography } from "antd";
 import { MANAGE_INDEX_PATHNAME } from "../router";
+import Flower from "./Flower";
 import styles from "./Home.module.scss";
 // import "../_mock/index";
 // import axios from "axios";
@@ -31,14 +32,14 @@ const Home: FC = () => {
   // 前端3000, api 3001
   // 跨域
   // create-react-app Webpack devServer 代理
-  useEffect(() => {
-    fetch("/api/test")
-      .then((res) => {
-        // console.log("res", res.json());
-        return res.json();
-      })
-      .then((data) => console.log("fetch data", data));
-  }, []);
+  // useEffect(() => {
+  //   fetch("/api/test")
+  //     .then((res) => {
+  //       // console.log("res", res.json());
+  //       return res.json();
+  //     })
+  //     .then((data) => console.log("fetch data", data));
+  // }, []);
 
   return (
     // <div>
@@ -52,8 +53,8 @@ const Home: FC = () => {
     <div className={styles.container}>
       <div className={styles.info}>
         <Title>问卷调查 | 在线投票</Title>
-        <Paragraph>
-          已累计创建问卷 100 份，发布问卷 90 份， 受到答卷 900 份
+        <Paragraph style={{ fontWeight: "500" }}>
+          已累计创建问卷 100+ 份，发布问卷 50+ 份， 受到答卷 100+ 份
         </Paragraph>
         <div>
           <Button
@@ -61,11 +62,15 @@ const Home: FC = () => {
             onClick={() => {
               nav(MANAGE_INDEX_PATHNAME);
             }}
+            // style={{ backgroundColor: "#4096FB", color: "#000" }}
           >
             开始使用
           </Button>
         </div>
       </div>
+      {/* <div>
+        <Flower />
+      </div> */}
     </div>
   );
 };

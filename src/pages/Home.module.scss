@@ -1,8 +1,11 @@
 .container {
     background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
-    height: calc(100vh - 64px - 65px);
+    // background: url('./../../public/DSCF7118.jpg') no-repeat;
+    // background-size: cover;
+    height: calc(100vh - 64px - 65px + 65px);
     display: flex;
     flex-direction: column;
+    // flex-direction: row;
     justify-content: center;
     .info {
         text-align: center;
@@ -14,3 +17,63 @@
         }
     }
 }
+
+// body {
+//     width: 100vw;
+//     height: 100vh;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     background: linear-gradient(to bottom, transparent, rgb(255, 255, 255)) rgb(214, 219, 220);
+// }
+
+// div {
+//     font-size: 40px;
+//     font-weight: 600;
+// }
+
+// div::before {
+//     content: "";
+//     position: absolute;
+//     height: 300px;
+//     width: 480px;
+//     transform: translateX(-50%);
+//     border-radius: 50%;
+//     background: radial-gradient(circle, white, transparent);
+//     filter: blur(40px);
+//     /* 2xl in Tailwind corresponds to 40px blur */
+//     z-index: 1;
+
+//     /* Dark mode styles */
+//     @media (prefers-color-scheme: dark) {
+//         background: radial-gradient(circle,
+//                 transparent,
+//                 #1e3a8a,
+//                 rgba(0, 0, 0, 0.1));
+//     }
+
+//     /* Large screen styles */
+//     @media (min-width: 1024px) {
+//         /* Assuming 'lg' breakpoint is 1024px */
+//         height: 360px;
+//     }
+// }
+
+// div::after {
+//     content: "";
+//     position: absolute;
+//     z-index: -20;
+//     height: 180px;
+//     width: 240px;
+//     transform: translateX(-30%);
+//     background: conic-gradient(#bae6fd,
+//             #bfdbfe);
+//     /* Approximation of sky-200 to blue-200 */
+//     filter: blur(40px);
+
+//     /* Dark mode styles */
+//     @media (prefers-color-scheme: dark) {
+//         background: conic-gradient(from #1e40af to #3b82f6);
+//         opacity: 0.4;
+//     }
+// }

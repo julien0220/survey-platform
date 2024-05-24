@@ -64,7 +64,10 @@ const Login: FC = () => {
         setToken(token);
 
         dispatch(
-          loginReducer({ username: result.username, nickname: result.username })
+          loginReducer({
+            username: result.username,
+            nickname: result.data?.nickname
+          })
         );
         nav(MANAGE_INDEX_PATHNAME);
         message.success("登录成功");

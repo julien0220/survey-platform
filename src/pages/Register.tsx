@@ -42,7 +42,8 @@ const Register: FC = () => {
       </div>
       <div>
         <Form
-          labelCol={{ span: 6 }}
+          style={{ marginRight: "26px" }}
+          labelCol={{ span: 7 }}
           wrapperCol={{ span: 16 }}
           onFinish={onFinish}
         >
@@ -75,6 +76,7 @@ const Register: FC = () => {
           <Form.Item
             label="确认密码"
             name="ConfirmPassword"
+            // style={{ paddingRight: "-20px" }}
             dependencies={["password"]} // 依赖password，只要password变化，就会触发验证
             rules={[
               { required: true, message: "请输入密码" },
@@ -93,7 +95,10 @@ const Register: FC = () => {
           <Form.Item label="昵称" name="nickname">
             <Input></Input>
           </Form.Item>
-          <Form.Item wrapperCol={{ span: 16, offset: 6 }}>
+          <Form.Item
+            style={{ marginLeft: "16px" }}
+            wrapperCol={{ span: 16, offset: 6 }}
+          >
             <Space>
               <Button type="primary" htmlType="submit">
                 注册

@@ -106,7 +106,7 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
             ) : (
               <Tag>未发布</Tag>
             )}
-            {/* <span>答卷:{answerCount || 0}</span> */}
+            <span>答卷:{answerCount || 0}</span>
             <span>{createAt}</span>
           </Space>
         </div>

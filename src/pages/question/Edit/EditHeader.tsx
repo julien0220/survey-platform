@@ -93,8 +93,8 @@ const PublishButton: FC = () => {
   const { id } = useParams();
   const { componentList = [] } = useGetComponentInfo();
   const pageInfo = useGetPageInfo();
-  console.log("componentList", componentList);
-  console.log("pageInfo", pageInfo);
+  // console.log("componentList", componentList);
+  // console.log("pageInfo", pageInfo);
   const { loading, run: pub } = useRequest(
     async () => {
       if (!id) return;
@@ -108,7 +108,7 @@ const PublishButton: FC = () => {
       manual: true,
       onSuccess() {
         message.success("发布成功");
-        nav("/question/stat/" + id);
+        nav("/manage/list/");
       }
     }
   );
